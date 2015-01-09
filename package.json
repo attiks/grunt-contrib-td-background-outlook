@@ -1,7 +1,7 @@
 {
   "name": "grunt-td-background-outlook",
   "version": "0.0.1",
-  "description": "The best Grunt plugin ever.",
+  "description": "Replace background on td with fallback code for outlook.",
   "homepage": "https://github.com/attiks/grunt-contrib-td-background-outlook",
   "repository": "https://github.com/attiks/grunt-contrib-td-background-outlook",
   "author": {
@@ -10,7 +10,8 @@
     "url": "https://attiks.com"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "outlook"
   ],
   "main": "Gruntfile.js",
   "engines": {
@@ -27,8 +28,5 @@
   },
   "scripts": {
     "test": "grunt test"
-  },
-  "dependencies": {
-    "soup": "^0.1.3"
   }
 }
