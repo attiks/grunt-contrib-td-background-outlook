@@ -39,13 +39,6 @@ module.exports = function (grunt) {
         files: {
           'tmp/sample.html': 'test/fixtures/sample.html'
         }
-      },
-      custom_options: {
-        options: {
-        },
-        files: {
-          'tmp/sample.html': 'test/fixtures/sample.html'
-        }
       }
     },
 
