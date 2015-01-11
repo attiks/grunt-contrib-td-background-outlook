@@ -40,7 +40,7 @@ module.exports = function (grunt) {
       }).join(grunt.util.normalizelf(options.separator));
 
       // Replace <td background=""></td>.
-      src = src.replace(/<td ([^>]*?)>([\s\S]*?)<\/td>/g, function(match) {
+      src = src.replace(/<td ([^>]*?)>([\s\S]*?)<\/td>/g, function(match, p1, p2) {
         var tdInner = '',
             width = '',
             height = '',
@@ -48,44 +48,40 @@ module.exports = function (grunt) {
             background = '',
             matcher;
 
-        if (/background="/.test(match)) {
-          var td = match.match(/<td ([^>]*)>/g)[0];
-          matcher = (/>([\s\S]*?)<\/td>/g).exec(match);
-          if (matcher) {
-            tdInner = matcher[1];
-          }
-
+        if (/background="/.test(p1)) {
           // Width;
-          matcher = (/width="([^"]*)"/g).exec(td);
+          matcher = (/width="([^"]*)"/g).exec(p1);
           if (matcher) {
             width = 'width:' + matcher[1] + 'px;';
           }
 
           // Height;
-          matcher = (/height="([^"]*)"/g).exec(td);
+          matcher = (/height="([^"]*)"/g).exec(p1);
           if (matcher) {
             height = 'height:' + matcher[1] + 'px;';
           }
 
           // Bgcolor;
-          matcher = (/bgcolor="([^"]*)"/g).exec(td);
+          matcher = (/bgcolor="([^"]*)"/g).exec(p1);
           if (matcher) {
             bgcolor = matcher[1];
           }
 
           // Background;
-          matcher = (/background="([^"]*)"/g).exec(td);
+          matcher = (/background="([^"]*)"/g).exec(p1);
           if (matcher) {
             background = matcher[1];
           }
-          //console.log(td);
-          //console.log(width + ', ' + height + ', ' + bgcolor + ', ' + background);
-          var top = '<!--[if gte mso 9]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="' + width + height +'"><v:fill type="tile" src="' + background + '" color="' + bgcolor + '" /><v:textbox inset="0,0,0,0"><![endif]--><div>';
+
+          var top = '<td ' + p1 + '><!--[if gte mso 9]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="' + width + height +'"><v:fill type="tile" src="' + background + '" color="' + bgcolor + '" /><v:textbox inset="0,0,0,0"><![endif]--><div>';
           var bottom = '</div><!--[if gte mso 9]></v:textbox></v:rect><![endif]--></td>';
-          return top + tdInner + bottom;
+          return top + p2 + bottom;
         }
         return match;
       });
+
+      // Replace white space between </td> and </td>.
+      src = src.replace(/<\/td>(\s+)<td/g, '</td><td');
 
       // Write the destination file.
       grunt.file.write(file.dest, src);
